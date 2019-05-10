@@ -1,0 +1,32 @@
+.navBar {
+    white-space: nowrap;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    background:#f8f9fa;
+    
+    .logo {
+        display: inline-box;  
+        height: 100%; 
+        margin:auto 10px; 
+        float: left;   
+    }
+    .menu-left {
+        display: inline-box;
+        background: none;
+        vertical-align: top;
+        border-bottom: none;
+        position: relative;
+        width: calc(100% - 44px);
+        float: left;
+        .login {
+            position: absolute;
+            right: 46px;
+        }
+        .register {
+            position: absolute;
+            right: 0;
+        }
+    }
+   
+}
