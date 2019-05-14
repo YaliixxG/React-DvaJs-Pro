@@ -3,6 +3,44 @@ import { Menu } from 'antd';
 import { Link } from 'dva/router';
 import style from './index.scss';
 
+const MenusRouteList = [
+  {
+    key: 'home',
+    path: '/home',
+    name: '主页'
+  },
+  {
+    key: 'menus',
+    path: '/menus',
+    name: '菜单'
+  },
+  {
+    key: 'admin',
+    path: '/admin',
+    name: '管理'
+  },
+  {
+    key: 'about',
+    path: '/about',
+    name: '关于我们'
+  },
+  {
+    key: 'login',
+    path: '/login',
+    name: '登录',
+    className: style.login,
+    //给登录和注册设置这个key值，主要是用于区别其他的路由，用于filter过滤
+    //如果登录成功了，我们即把登录和注册隐藏掉
+    isAuthority: true
+  },
+  {
+    key: 'register',
+    path: '/register',
+    name: '注册',
+    className: style.register,
+    isAuthority: true
+  }
+];
 export default class index extends Component {
   constructor(props) {
     super(props);
@@ -19,22 +57,21 @@ export default class index extends Component {
     });
   }
 
-  componentDidMount(){
-      this.handleSelectedKeys(this.props.location.pathname)
+  componentDidMount() {
+    this.handleSelectedKeys(this.props.location.pathname);
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps){
-      const {props} = this.props
-      if(nextProps !== props ) {
-          this.handleSelectedKeys(nextProps.location.pathname)
-      }
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    const { props } = this.props;
+    if (nextProps !== props) {
+      this.handleSelectedKeys(nextProps.location.pathname);
+    }
   }
-
 
   render() {
     return (
       <nav className={style.navBar}>
-        <a className={style.logo} href="#">
+        <a className={style.logo} href="/#/home">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -62,7 +99,17 @@ export default class index extends Component {
           defaultSelectedKeys={['home']}
           selectedKeys={this.state.selectedKeys}
         >
-          <Menu.Item key={'home'}>
+          {/* 遍历路由并且用 登录和注册独有设置的isAuthority来过滤,
+          再通过localStorage是否有值来判断是否登录*/}
+          {MenusRouteList.filter(
+            ({ isAuthority }) =>
+              !(isAuthority && localStorage.key && localStorage.email)
+          ).map(({ key, path, name, className }) => (
+            <Menu.Item key={key} className={className}>
+              <Link to={path}>{name}</Link>
+            </Menu.Item>
+          ))}
+          {/* <Menu.Item key={'home'}>
             <Link to="/home">主页</Link>
           </Menu.Item>
           <Menu.Item key={'menus'}>
@@ -79,7 +126,7 @@ export default class index extends Component {
           </Menu.Item>
           <Menu.Item key={'register'} className={style.register}>
             <Link to="/register">注册</Link>
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu>
       </nav>
     );

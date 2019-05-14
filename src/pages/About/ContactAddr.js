@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
-export default class History extends Component {
+export default class ContactAddr extends Component {
   render() {
     return (
       <div>
-        历史订餐
+        这里是我们的联系地址~~~~
       </div>
     )
   }

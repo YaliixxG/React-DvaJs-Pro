@@ -10,7 +10,7 @@ import { Router, Switch } from 'dva/router';
 import SubRoute from './utils/SubRoute';
 
 //设置私有路由开关
-const isAuthority = true
+const isAuthority = true;
 
 const RouteConfig = [
   {
@@ -29,7 +29,7 @@ const RouteConfig = [
       },
       {
         path: '/menus',
-        component:()=>import('./pages/Menus'),
+        component: () => import('./pages/Menus'),
         // component:Menus,
         isAuthority,
         model: []
@@ -59,27 +59,39 @@ const RouteConfig = [
         // component:About,
         isAuthority,
         model: [],
-        routes:[
+        routes: [
           {
-            path:'/about/history',
-            model:[],
-            component:() => import('./pages/About/History')
+            path: '/about/history',
+            model: [],
+            component: () => import('./pages/About/History')
           },
           {
-            path:'/about/content',
-            model:[],
-            component:() => import('./pages/About/Content')
+            path: '/about/contact',
+            model: [],
+            component: () => import('./pages/About/Contact'),
+            routes: [
+              {
+                path: '/about/contact/phone',
+                model: [],
+                component: () => import('./pages/About/Phone')
+              },
+              {
+                path: '/about/contact/contactAddr',
+                model: [],
+                component: () => import('./pages/About/ContactAddr')
+              }
+            ]
           },
           {
-            path:'/about/address',
-            model:[],
-            component:() => import('./pages/About/Address')
+            path: '/about/address',
+            model: [],
+            component: () => import('./pages/About/Address')
           },
           {
-            path:'/about/ordering',
-            model:[],
-            component:() => import('./pages/About/Ordering')
-          },
+            path: '/about/ordering',
+            model: [],
+            component: () => import('./pages/About/Ordering')
+          }
         ]
       }
     ]

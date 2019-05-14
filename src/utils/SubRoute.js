@@ -19,7 +19,7 @@ const dynamicComp = (app, models, component, routes, isAuthority, userInfo) =>
       
       //如果isAuthority不为true,并且用户信息无内容 则直接跳转到登录页
       if(isAuthority){
-        if(!userInfo.id){
+        if(!localStorage.key || !localStorage.email){
           return () => <Redirect to="/login" />
         }       
       }
