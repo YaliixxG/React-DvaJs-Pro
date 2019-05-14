@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Menu } from 'antd';
+import { Menu, Dropdown, Icon } from 'antd';
 import { Link } from 'dva/router';
 import style from './index.scss';
 
@@ -68,6 +68,22 @@ export default class index extends Component {
     }
   }
 
+  handleUserInfoArea = ({key}) => {
+    //判断点击的是否是退出按钮
+    if(key === 'logout'){
+      window.localStorage.clear()
+      this.props.history.push('/login')
+    }
+  }
+
+  userInfoArea = (
+    <Menu onClick = { this.handleUserInfoArea}>
+      <Menu.Item key={'logout'}>
+        <span>退出</span>
+      </Menu.Item>
+    </Menu>
+  );
+
   render() {
     return (
       <nav className={style.navBar}>
@@ -128,6 +144,15 @@ export default class index extends Component {
             <Link to="/register">注册</Link>
           </Menu.Item> */}
         </Menu>
+        {/* 用户登录后的邮箱展示，以及退出 */}
+        {localStorage.email && localStorage.key && (
+          <Dropdown overlay={this.userInfoArea} className={style['dropdown-menu']}>
+            <a className="ant-dropdown-link" href="#">
+              <span className={style.email}>{localStorage.email}</span>
+              <Icon type="down" className={style.icon}/>
+            </a>
+          </Dropdown>
+        )}
       </nav>
     );
   }
