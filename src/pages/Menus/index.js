@@ -16,15 +16,15 @@ export default class index extends Component {
         key: 'size',
         render: (text, record) => {
           //这个判断是用来解决标题的下划线的长度问题，这个条件是通过字段来区分是不是标题栏
-          if(record.price){
-            return <span>{text}</span>
+          if (record.price) {
+            return <span>{text}</span>;
           }
           return {
-            children:<strong>{text}</strong>,
-            props:{
-              colSpan: 2
+            children: <strong>{text}</strong>,
+            props: {
+              colSpan: 2 //列的长度，如果设置为0 则不显示
             }
-          }
+          };
         }
       },
       {
@@ -60,16 +60,13 @@ export default class index extends Component {
     //点击添加进购物车
     const handleAddMenus = record => {
       //console.log(record)
-      const { name, price, size } = record;
 
       //存储到状态中
       this.setState({
         cart: [
           ...this.state.cart, //这里是把购物车已存进去的数据放在里面
           {
-            name,
-            price,
-            size,
+            ...record,
             count: 1
           }
         ]
@@ -155,9 +152,19 @@ export default class index extends Component {
         dataIndex: 'count',
         render: (text, record) => (
           <span>
-            <Button className={style['cart-btn']}>-</Button>
-            <span>1</span>
-            <Button className={style['cart-btn']}>+</Button>
+            <Button
+              onClick={() => handleDecrease(record)}
+              className={style['cart-btn']}
+            >
+              -
+            </Button>
+            <span>{record.count}</span>
+            <Button
+              onClick={() => handleIncrease(record)}
+              className={style['cart-btn']}
+            >
+              +
+            </Button>
           </span>
         )
       },
@@ -173,7 +180,62 @@ export default class index extends Component {
       }
     ];
 
-    return <Table className="menus-table cart" pagination={false} dataSource={this.state.cart} columns={columns}/>
+    //减
+    const handleDecrease = record => {
+      const { cart } = this.state;
+
+      //拿到点击的项的对应下标,record可以打印，它就是当前点击的这个对象
+      const index = cart.findIndex(item => item.key === record.key);
+
+      //当前这一项
+      const current = cart[index];
+      //判断这一项的count是多少，如果小于等于1，则直接从购物车数组中删掉，否则count减一
+      //splice(删除项的下标，从删除项开始几个，添加的项)
+      if (current.count <= 1) {
+        cart.splice(index, 1);
+      } else {
+        cart.splice(index, 1, {
+          ...current,//添加一个当前项进去，但是count改为减一
+          count: current.count - 1
+        });
+      }
+
+      this.setState({
+        cart
+      })
+    };
+
+    //加
+    const handleIncrease = record => {
+      const { cart } = this.state;
+
+      //拿到点击的项的对应下标,record可以打印，它就是当前点击的这个对象
+      const index = cart.findIndex(item => item.key === record.key);
+
+      //当前这一项
+      const current = cart[index];
+      //splice(删除项的下标，从删除项开始几个，添加的项)
+      //商品+1
+        cart.splice(index,1,{
+          ...current,//添加一个当前项进去，但是count改为减一
+          count: current.count + 1
+        });
+
+      this.setState({
+        cart
+      })
+    };
+
+
+    return (
+      <Table
+        locale={{ emptyText: '购物车没有任何商品' }}
+        className="menus-table cart"
+        pagination={false}
+        dataSource={this.state.cart}
+        columns={columns}
+      />
+    );
   }
 
   render() {
@@ -185,7 +247,9 @@ export default class index extends Component {
         <Col sm={24} md={8}>
           {this.renderCartTable()}
           <p className={style['total-price']}>总价：</p>
-          <Button type="primary" className={style['submit-btn']}>提交</Button>
+          <Button type="primary" className={style['submit-btn']}>
+            提交
+          </Button>
         </Col>
       </Row>
     );
