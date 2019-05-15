@@ -62,16 +62,38 @@ export default class index extends Component {
       //console.log(record)
 
       //存储到状态中
-      this.setState({
-        cart: [
-          ...this.state.cart, //这里是把购物车已存进去的数据放在里面
+      // this.setState({
+      //   cart: [
+      //     ...this.state.cart, //这里是把购物车已存进去的数据放在里面
+      //     {
+      //       ...record,
+      //       count: 1
+      //     }
+      //   ]
+      // });
+
+      //为了不重复添加物品进购物车，例如我已经添加了一份9寸的水果披萨了，再添加我们应该是让数量+1,
+      //而不是再添加一条完整的9寸水果披萨商品信息进去
+      //通过对应的唯一的key值来判断是否已经添加过这一类别
+      let { cart } = this.state
+      //通过KEY，在购物车数组中查找有没有你添加的这一条record的，没有这个方法会返回”-1“，有则返回对应的下标
+      const index = cart.findIndex(item => item.key === record.key)
+
+      index >= 0 ? cart.splice(index, 1, {
+        ...cart[index],
+        count: cart[index].count + 1
+      }) :
+        (cart = [
+          ...this.state.cart,
           {
             ...record,
             count: 1
           }
-        ]
-      });
-      console.log('000', this.state.cart);
+        ])
+
+      this.setState({
+        cart
+      })
     };
 
     let data = {
@@ -216,16 +238,15 @@ export default class index extends Component {
       const current = cart[index];
       //splice(删除项的下标，从删除项开始几个，添加的项)
       //商品+1
-        cart.splice(index,1,{
-          ...current,//添加一个当前项进去，但是count改为减一
-          count: current.count + 1
-        });
+      cart.splice(index, 1, {
+        ...current,//添加一个当前项进去，但是count改为减一
+        count: current.count + 1
+      });
 
       this.setState({
         cart
       })
     };
-
 
     return (
       <Table
@@ -239,6 +260,11 @@ export default class index extends Component {
   }
 
   render() {
+
+    //计算总价
+    //reduce函数第三个参数必须设置初始值，否则会报错 Reduce of empty array with no initial value
+    const totalPrice = this.state.cart.reduce((total, item) => total += item.price * item.count, 0)
+
     return (
       <Row>
         <Col sm={24} md={16}>
@@ -246,7 +272,7 @@ export default class index extends Component {
         </Col>
         <Col sm={24} md={8}>
           {this.renderCartTable()}
-          <p className={style['total-price']}>总价：</p>
+          <p className={style['total-price']}>总价：{totalPrice}</p>
           <Button type="primary" className={style['submit-btn']}>
             提交
           </Button>
