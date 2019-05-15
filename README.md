@@ -1,5 +1,5 @@
 # React-DvaJs-Pro
-React+DvaJs实现简单的点餐系统项目
+React+DvaJs实现简单的点餐系统demo
 
 * 动态加载路由组件
 * 路由守卫
