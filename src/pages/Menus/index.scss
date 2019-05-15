@@ -1,0 +1,56 @@
+.add-btn {
+  padding: 0 5px;
+  height: 26px;
+  color: green;
+}
+
+//购物车的 - + 按钮
+.cart-btn {
+  padding: 0 5px;
+  margin-right: 5px;
+  height: 26px;
+  color: green;
+  border: none;
+  background: none;
+  color: #333;
+  &:hover,
+  &:active,
+  &:focus {
+    border: none;
+    background: none;
+    color: #000;
+  }
+  &:last-of-type {
+    margin-right: 0;
+    margin-left: 5px;
+  }
+}
+//总价
+.total-price {
+  margin-top: 10x;
+}
+//提交按钮
+.submit-btn {
+  width: 100%;
+}
+
+:global {
+  //因为是修改Table组件的样式，所以只能用全局样式
+  .menus-table {
+    margin-right: 30px;
+    &.cart {
+        margin-right: 0;
+    }
+    table {
+      tr {
+        th {
+          background: none;
+        }
+        th,
+        td {
+          padding: 10px;
+        }
+      }
+    }
+  }
+}
