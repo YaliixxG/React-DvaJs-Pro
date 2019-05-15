@@ -147,7 +147,7 @@ export default class index extends Component {
         {/* 用户登录后的邮箱展示，以及退出 */}
         {localStorage.email && localStorage.key && (
           <Dropdown overlay={this.userInfoArea} className={style['dropdown-menu']}>
-            <a className="ant-dropdown-link" href="#">
+            <a className="ant-dropdown-link">
               <span className={style.email}>{localStorage.email}</span>
               <Icon type="down" className={style.icon}/>
             </a>
