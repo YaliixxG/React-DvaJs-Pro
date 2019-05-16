@@ -1,11 +1,30 @@
 import React, { Component } from 'react';
 import { Table, Button, Icon, Row, Col } from 'antd';
+import Request from '../../utils/Request';
 import style from './index.scss';
 
 export default class index extends Component {
   state = {
-    cart: [] //购物车数组
+    cart: [], //购物车数组
+    data: []
   };
+  
+  //钩子函数
+  componentDidMount() {
+    this.getMenusData()
+  }
+
+
+  //网络请求接口，获取菜单数据
+  getMenusData = () => {
+    Request('/menu.json').then(res => {
+      if( res && res.status === 200 && res.data ) {
+        this.setState({
+          data: res.data
+        })
+      }
+    })
+  }
 
   //菜单渲染
   renderMenusTable() {
@@ -96,50 +115,7 @@ export default class index extends Component {
       })
     };
 
-    let data = {
-      1: {
-        name: '水果pizza',
-        description: '多种水果的',
-        options: [
-          {
-            size: 9,
-            price: 48
-          },
-          {
-            size: 12,
-            price: 68
-          }
-        ]
-      },
-      2: {
-        name: '弗洛伦萨pizza',
-        description: '培根火腿',
-        options: [
-          {
-            size: 9,
-            price: 68
-          },
-          {
-            size: 12,
-            price: 98
-          }
-        ]
-      },
-      3: {
-        name: '意大利pizza',
-        description: '各种食物的大杂烩',
-        options: [
-          {
-            size: 9,
-            price: 98
-          },
-          {
-            size: 12,
-            price: 128
-          }
-        ]
-      }
-    };
+    let data = this.state.data
     //处理数据格式
     let dataSource = [];
     for (const i in data) {
