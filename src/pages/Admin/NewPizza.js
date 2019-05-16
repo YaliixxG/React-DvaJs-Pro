@@ -1,8 +1,52 @@
 import React, { Component } from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Message } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
+import Request from '../../utils/Request';
 
 class NewPizza extends Component {
+
+    handleSubmit = () => {
+        //console.log(this.props.form)
+        //打印 this.props.form，会发现下面有个 validateFields
+        this.props.form.validateFields((err,value) => {
+            //console.log(value)
+            //打印参数value会发现，这个就是你输入的表单的内容
+            //{name: "q", description: "q", size1: "q", price1: "q", size2: "q", price1: "q"}
+            if (!err) {
+                const { name, description, size1, price1, size2, price2 } = value;
+
+                let data = {
+                    name,
+                    description,
+                    options: [
+                        {
+                            size: size1,
+                            price: price1
+                        },
+                        {
+                            size: size2,
+                            price: price2
+                        }
+                    ]
+                }
+
+                //网络请求 添加类别进菜单
+                Request('/menu.json',{
+                    method: 'post',
+                    data             
+                }).then(res =>{
+                    if( res && res.status === 200 && res.data ){
+                        Message.success('添加成功')
+                        window.location.href = '/#/menus'
+                    }else {
+                        Message.error('添加失败')
+                    }
+                })
+
+            }
+        })
+    }
+
   render() {
     //设置表单样式
     const formItemLayout = {
@@ -29,7 +73,7 @@ class NewPizza extends Component {
 
     return (
       <div>
-        <h3>添加新的菜单 😸</h3>
+        <h3>添加新的菜单</h3>
         <Form>
           <Form.Item {...formItemLayout} label="品种">
             {getFieldDecorator('name', {
@@ -91,7 +135,7 @@ class NewPizza extends Component {
             })(<Input />)}
           </Form.Item>
           <Form.Item>
-            <Button type="primary" className="btn-w-p100">
+            <Button onClick={this.handleSubmit} type="primary" className="btn-w-p100">
               提交
             </Button>
           </Form.Item>
