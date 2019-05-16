@@ -130,7 +130,6 @@ export default class index extends Component {
         dataSource.push({ ...ele, name: item.name, key: i + '-' + index });
       });
     }
-    console.log(dataSource);
     return (
       <Table
         pagination={false}
