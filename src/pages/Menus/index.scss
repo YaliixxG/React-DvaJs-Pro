@@ -34,23 +34,3 @@
   width: 100%;
 }
 
-:global {
-  //因为是修改Table组件的样式，所以只能用全局样式
-  .menus-table {
-    margin-right: 30px;
-    &.cart {
-        margin-right: 0;
-    }
-    table {
-      tr {
-        th {
-          background: none;
-        }
-        th,
-        td {
-          padding: 10px;
-        }
-      }
-    }
-  }
-}
