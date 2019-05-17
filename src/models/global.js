@@ -8,7 +8,8 @@ export default {
       email:null,
       pwd:null,
       key:null
-    }
+    },
+    hello:'你好'
   },
 
   subscriptions: {},
