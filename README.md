@@ -19,3 +19,67 @@ React+DvaJs实现简单的点餐系统demo
 * 添加新菜单类别组件
 * 新菜单类别数据存取到接口中
 * 从数据接口中删除菜单类别
+
+--------------------------------------------------------------
+## 官方案例学习
+
+dva相当于将很多的API集中到了一起，变为了更为统一的API。  
+
+#### 1. 引入依赖  
+```js
+import React from 'react';
+import dva, { connect } from 'dva';
+import { Router, Route } from 'dva/router'
+```
+#### 2. 创建应用，返回dva实例  
+```js
+const app = dva()
+```  
+`app`：统领所有API的载体，你会发现store和路由都是统一“绑在”app上的。 组件不是，组件仍然独立。  
+
+#### 3. 注册`model`  
+`dva`将原来的`Redux`中`combineReducer`这个东西进行了一个拆分：  
+```js
+app.model({
+    namespace: 'count', //model的命名空间，同时也是他在全局  state 上的属性
+    state: 0, //初始值
+    reducers: { //用于处理同步操作，由 action 触发
+        add(state) { return state + 1 }
+        minus(state) { return state - 1 }
+    }
+})
+```  
+相当于将一个个的`reducer`，原来可以用`combineReducer`合并，现在可以用  
+```js
+app.model()
+app.model()
+app.model()
+```  
+这样的形式来进行组织。  
+发送命令的时候，必须加上命名空间。  
+```js  
+this.props.dispatch({'type':'count/add'}) 
+``` 
+#### 4. connect  
+
+`dva`帮我们隐形的完成了`dispatch`和`props`的映射函数：  
+
+```js  
+App = connect(({count}) =>{
+    return {
+        count:count
+    }    
+})(App)
+```
+在组件的内部任意时候都可以去进行一个`action`的发送操作，不需要再注入`constructor`中的`props`：  
+```js  
+this.props.dispatch({'type':'count/add'}) 
+``` 
+`model`可以自由的交给任何一个组件去发送 `action`去改变它。  
+
+#### 5.开机启动  
+```js
+app.start('#root')
+```
+
+
