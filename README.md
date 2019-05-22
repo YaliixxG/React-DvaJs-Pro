@@ -85,5 +85,9 @@ this.props.dispatch({'type':'count/add'})
 ```js
 app.start('#root')
 ```
+#### 6. effects 
+
+`put`：你就认为`put`就等于 `dispatch`就可以了；  
+`call`：可以理解为实行一个异步函数,是阻塞型的，只有运行完后面的函数，才会继续往下；在这里可以片面的理解为`async`中的`await`！但写法直观多了！
 
 
