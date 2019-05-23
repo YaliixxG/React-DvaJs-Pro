@@ -35,7 +35,7 @@ $ npm start
 ```js
 $ npm install antd --save
 ```
-4. 安装sass  
+4. 项目自带less,如果你习惯使用sass,可以进行自定义安装，安装sass  
 ```js
 npm install node-sass sass-loader --save
 ```
