@@ -20,6 +20,57 @@ React+DvaJs实现简单的点餐系统demo
 * 新菜单类别数据存取到接口中
 * 从数据接口中删除菜单类别
 
+--------------------------------------------------------------
+操作步骤：  
+1. 创建项目  
+```js
+$ dva new demo-name
+```
+2. 进入并运行项目
+```js
+$ cd demo-name
+$ npm start
+```
+3. 引入antd组件库
+```js
+$ npm install antd --save
+```
+4. 安装sass  
+```js
+npm install node-sass sass-loader --save
+```
+5. 按需加载  
+```js
+$ cnpm install babel-plugin-import --save-dev
+```  
+在根目录.webpackrc文件，并在文件中添加插件配置,静态文件配置 
+```js
+    const path = require('path');
+    export default {
+    //`babel-plugin-import --save` antd 按需加载webpack配置
+    extraBabelPlugins:[
+        ['import',{ libraryName: 'antd', libraryDirectory: 'es', style: true }]
+    ],
+    //引入静态文件配置路径
+    alias: {
+        Assets: path.resolve(__dirname,'./src/assets')
+    }
+    }
+```  
+6. webpack反向代理  
+在根目录.webpackrc文件
+```js
+"proxy": {
+        "/api": {
+            "target": "http://jsonplaceholder.typicode.com/",
+            "changeOrigin": true,
+            "pathRewrite": { "^/api": "" }
+        }
+    }
+```  
+访问 http://localhost:8000/api/users 如果你看见一串json数据代表代理成功，就可以进行下一步开发了（该json数据是dva官方提供的测试数据，使用Mockjs开发）
+完成以上准备工作我们就开始正式的demo开发了
+
 --------------------------------------------------------------  
 1. reducer里面必须是纯函数，什么是纯函数？  
     * 一个函数的返回结果只依赖于它的参数，并且在执行过程里面没有副作用，我们就把这个函数叫做纯函数。
